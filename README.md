@@ -1,6 +1,6 @@
 # wechat_clone
 
-A new Flutter application.
+高仿微信，仅用于个人学习flutter
 
 ## Getting Started
 
