@@ -33,7 +33,7 @@ class AppColors {
 
 class AppStyles {
   static const TitleStyle = TextStyle(
-    fontSize: Constants.TitleTextSize,
+    fontSize: Constants.TitleTextSize + 2.0,
     color: const Color(AppColors.TitleColor),
   );
 

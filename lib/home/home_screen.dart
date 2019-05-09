@@ -4,6 +4,12 @@ import 'package:flutter/services.dart';
 import '../constants.dart' show Constants, AppColors, AppStyles;
 import '../i18n/strings.dart' show Strings;
 
+import './contacts_page.dart';
+import './conversation_page.dart';
+import './discover_page.dart';
+import './functions_page.dart';
+
+
 enum ActionItems {
   GROUP_CHAT,
   ADD_FRIEND,
@@ -36,10 +42,12 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
 
   static const HeaderColor = const Color(AppColors.PrimaryColor);
+  PageController _pageController;
   int _currentIndex = 0;
   List<NavigationIconViw> _navigationViews;
   List<Widget> _mainActions;
   List<Widget> _functionActions;
+  List<Widget> _pages;
 
   void initState() {
     super.initState();
@@ -99,7 +107,7 @@ class _HomeScreenState extends State<HomeScreen> {
             0xe60e,
             fontFamily: Constants.IconFontFamily,
           ),
-            size: Constants.ActionIconSize + 4.0,
+            size: Constants.ActionIconSize + 2.0,
             color: const Color(AppColors.ActionIconColor),
           ),
           onPressed: () {
@@ -167,7 +175,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     _navigationViews = [
       NavigationIconViw(
-      title: Strings.TitleContact,
+      title: Strings.TitleWechat,
         icon: IconData(
           0xe608,
           fontFamily: Constants.IconFontFamily,
@@ -211,7 +219,17 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     ];
+
+    _pageController = PageController(initialPage: _currentIndex);
+    _pages = [
+      ConversationPage(),
+      ContactsPage(),
+      DiscoverPage(),
+      FunctionsPage(),
+    ];
   }
+
+
 
   _buildPopupMunuItem(int iconName, String title) {
     return Row(
@@ -245,6 +263,7 @@ class _HomeScreenState extends State<HomeScreen> {
       onTap: (int index) {
         setState(() {
           _currentIndex = index;
+          _pageController.jumpToPage(_currentIndex);
         });
       },
     );
@@ -257,6 +276,36 @@ class _HomeScreenState extends State<HomeScreen> {
         brightness: Brightness.light,
         backgroundColor: widget.headerColor,
         actions: _currentIndex == 3 ? _functionActions : _mainActions,
+      ),
+      body: PageView.builder(
+          itemBuilder: (BuildContext context, int index){
+            return _pages[index];
+          },
+        controller: _pageController,
+        itemCount: _pages.length,
+        onPageChanged: (int index){
+            setState(() {
+              _currentIndex = index;
+              switch(index){
+                case 0:
+                  widget.title = Strings.TitleWechat;
+                  widget.headerColor = HeaderColor;
+                  break;
+                case 1:
+                  widget.title = Strings.TitleContact;
+                  widget.headerColor = HeaderColor;
+                  break;
+                case 2:
+                  widget.title = Strings.TitleDiscovery;
+                  widget.headerColor = HeaderColor;
+                  break;
+                case 3:
+                  widget.title = '';
+                  widget.headerColor = Colors.white;
+                  break;
+              }
+            });
+        },
       ),
       bottomNavigationBar: bottomNavigationBar,
     );
