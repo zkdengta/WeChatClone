@@ -7,10 +7,23 @@ class ContactsPage extends StatefulWidget {
 }
 
 class _ContactsPageState extends State<ContactsPage>{
+  ScrollController _scrollController;
 
   @override
   Widget build(BuildContext context) {
+
+    final List<Widget> _body = [
+      ListView.builder(
+        controller: _scrollController,
+        itemBuilder:(BuildContext context, int index){
+
+        },
+      ),
+    ];
+
     // TODO: implement build
-    return new Text('通讯录');
+    return Stack(
+      children: _body,
+    );
   }
 }
